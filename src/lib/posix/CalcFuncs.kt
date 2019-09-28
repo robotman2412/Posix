@@ -15,7 +15,7 @@ const val TAU = PI * 2
  * The angle on the wheels is:
  * Front left / back right: front left to back right
  * Front right / back left: front right to back left
- * If this is in reverse, arg right and arg turnRight must be inverted to compensate
+ * If this is in reverse, arg right must be inverted to compensate
  * The returned angle is in radians, so is turnRight
  */
 fun strafeQuadOmni(forward: Double, right: Double, turnRight: Double, radius: Double, leftRightSpacing : Double) : Array<Double> {
@@ -35,7 +35,7 @@ fun strafeQuadOmni(forward: Double, right: Double, turnRight: Double, radius: Do
  * The angle on the wheels is:
  * Front left / back right: front left to back right
  * Front right / back left: front right to back left
- * If this is in reverse, arg right and arg turnRight must be inverted to compensate
+ * If this is in reverse, arg right must be inverted to compensate
  * The returned angle is in radians, so is turnRight
  */
 fun straightQuadOmni(forward: Double, right: Double, turnRight: Double, radius: Double, leftRightSpacing : Double, iterations: Int) : Array<Array<Double>> {
