@@ -1,4 +1,6 @@
 package lib.posix
+import lib.posix.movement.SimpleMovementSequence
+import lib.posix.movement.SimpleMovementStruct
 import kotlin.*
 import kotlin.math.atan2
 import kotlin.math.sin
@@ -60,7 +62,7 @@ fun angConv(angle : Double) : Double {
  * Front right / back left: front right to back left
  * If this is in reverse, arg right must be inverted to compensate
  */
-fun strafeQuadOmni(forward: Double, right: Double, turnRight: Double, radius: Double, leftRightSpacing : Double, time : Double) : Array<Double> {
+fun strafeQuadOmni(forward: Double, right: Double, turnRight: Double, radius: Double, leftRightSpacing : Double, time : Double) : SimpleMovementStruct {
 	val radialOffset : Double = convAng(turnRight) / TAU * (leftRightSpacing / 2 * PI)
 	val rotDist : Double = radius * PI
 	val backLeft : Double = angConv((forward + radialOffset - right) / rotDist * TAU)
@@ -68,7 +70,7 @@ fun strafeQuadOmni(forward: Double, right: Double, turnRight: Double, radius: Do
 	val frontLeft : Double = angConv((forward - radialOffset + right) / rotDist * TAU)
 	val frontRight : Double = angConv((forward - radialOffset - right) / rotDist * TAU)
 	val mArr = arrayOf(backLeft, backRight, frontLeft, frontRight)
-	return mArr.plus(time)
+	return SimpleMovementStruct(time, *mArr.toDoubleArray())
 }
 
 /**
@@ -80,17 +82,17 @@ fun strafeQuadOmni(forward: Double, right: Double, turnRight: Double, radius: Do
  * Front right / back left: front right to back left
  * If this is in reverse, arg right must be inverted to compensate
  */
-fun straightQuadOmni(forward: Double, right: Double, turnRight: Double, radius: Double, leftRightSpacing : Double, time : Double, iterations: Int) : Array<Array<Double>> {
+fun straightQuadOmni(forward: Double, right: Double, turnRight: Double, radius: Double, leftRightSpacing : Double, time : Double, iterations: Int) : SimpleMovementSequence {
 	var angOffs = angConv(atan2(-forward, right))
 	val dist = sqrt(forward * forward + right * right)
 	val partRotate = turnRight / iterations
 	val mTime = time / iterations
-	return Array(iterations) {
-		val mAng : Double = angOffs + partRotate / 2
-		val mRight : Double = cos(mAng) * dist
-		val mForward : Double = sin(mAng) * dist
-		val ars : Array<Double> = strafeQuadOmni(mForward, mRight, partRotate, radius, leftRightSpacing, mTime)
+	return SimpleMovementSequence(*Array(iterations) {
+		val mAng: Double = convAng(angOffs + partRotate / 2)
+		val mRight: Double = cos(mAng) * dist
+		val mForward: Double = -sin(mAng) * dist
+		val ars: SimpleMovementStruct = strafeQuadOmni(mForward, mRight, partRotate, radius, leftRightSpacing, mTime)
 		angOffs -= partRotate
 		ars
-	}
+	})
 }
