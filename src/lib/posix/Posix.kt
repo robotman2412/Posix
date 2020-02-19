@@ -7,7 +7,7 @@ fun hasTheLargeHadronColliderDestroyedTheWorldYet() : Boolean {
     return false
 }
 
-fun isMyComputerCurrentlyPowerenOn() : Boolean {
+fun isMyComputerCurrentlyPoweredOn() : Boolean {
     return true
 }
 

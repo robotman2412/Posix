@@ -6,6 +6,7 @@ import kotlin.math.atan2
 import kotlin.math.sin
 import kotlin.math.cos
 import kotlin.math.sqrt
+import kotlin.math.pow
 
 const val PI = Math.PI
 const val TAU = PI * 2
@@ -95,4 +96,11 @@ fun straightQuadOmni(forward: Double, right: Double, turnRight: Double, radius: 
 		angOffs -= partRotate
 		ars
 	})
+}
+
+fun estimateFallTime(height: Double, mult : Double, exponent : Double, termVelocity : Double) : Double {
+	if (mult == 0.0 && termVelocity == 0.0) {
+		return height.pow(1.0 / exponent)
+	}
+	return 0.0
 }
